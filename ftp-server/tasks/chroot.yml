@@ -1,0 +1,27 @@
+---
+- name: modifying a /etc/vsftpd/chroot_list file
+  lineinfile:
+    path: "{{ chroot.chroot_list_file }}"
+    line: "{{ item.name }}"
+    state: present
+    create: true
+    backup: true
+  loop: "{{ ftp_users }}"
+  when: >
+    (chroot.chroot_local_user == "YES" ) and 
+    (chroot.chroot_list_enable == "YES" ) and
+    ( item.chroot is not defined or item.chroot == "YES" )
+
+- name: modifying a /etc/vsftpd/chroot_list file
+  lineinfile:
+    path: "{{ chroot.chroot_list_file }}"
+    line: "{{ item.name }}"
+    state: present
+    create: true
+    backup: true
+  loop: "{{ ftp_users }}"
+  when: >
+    (chroot.chroot_local_user == "NO") and
+    (chroot.chroot_list_enable == "YES") and
+    ( item.chroot is defined and item.chroot == "YES" )
+

@@ -1,0 +1,34 @@
+---
+- name: Installing a python3-pip module
+  yum:
+    name: python3-pip
+    state: present
+
+- name: Installing a cryptography module
+  ansible.builtin.pip:
+    name: cryptography
+
+- name: "Generating a private key"
+  community.crypto.openssl_privatekey:
+    path: "{{ ssl.key_path }}"
+    mode: "0640"
+    type: RSA
+    size: 2048
+    state: present
+                                                                      
+- name: "Generating a Certificate Signing Request(CSR) for self signed certificate"
+  community.crypto.openssl_csr_pipe:
+    privatekey_path: "{{ ssl.key_path }}"
+    common_name: "{{ ssl.cert_common_name }}"
+    organization_name: "{{ ssl.cert_org_name }}"
+  register: csr
+
+- name: "Generating a self-signed certificate"
+  community.crypto.x509_certificate:
+    path: "{{ ssl.crt_path }}"
+    privatekey_path: "{{ ssl.key_path }}"
+    csr_content: "{{ csr.csr }}"
+    provider: selfsigned
+    selfsigned_not_after: "+365d" 
+    mode: "0644"
+    state: present

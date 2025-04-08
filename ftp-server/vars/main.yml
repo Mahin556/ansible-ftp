@@ -1,8 +1,4 @@
 ---
-pkgs:
-  - vsftpd
-  - python3-pip
-
 ssl:
   ssl_enable: "YES"
   key_path: "/etc/pki/tls/private/ftp.key"
@@ -15,8 +11,7 @@ ssl:
 passive_ports:
   pasv_enable: "YES"
   pasv_min_port: "60000"
-  pasv_max_port: "60100"
-
+  pasv_max_port: "60010"
 
 userlist:
   userlist_enable: "YES"
@@ -24,7 +19,7 @@ userlist:
   userlist_deny: "NO"
 
 chroot:
-  chroot_local_user: "YES"
+  chroot_local_user: "NO"
   chroot_list_enable: "YES"
   allow_writeable_chroot: "YES"
   chroot_list_file: "/etc/vsftpd/chroot_list"

@@ -1,17 +1,19 @@
 ---
-- name: CONFIGURING A FTP SERVER
-  hosts: system1
+- name: Configuring a ftp server
+  hosts: ftp-systems
+  vars:
+    ftp_server_enable: true
+    ftp_client_enable: false
+  vars_files:
+    - user_info.yml 
   tasks:
-    - name: TASK1
-      include_role:
-        name: ftp-server
-      
-- name: CONFIGURING A LINUX FTP CLIENT
-  hosts: system2
-  remote_user: root
-  tasks:
-    - name: TASK2
-      include_role:
-        name: ftp-client-linux
-      
+  - name: CONFIGURING A FTP SERVER
+    include_role:
+      name: ftp-server
+    when: inventory_hostname in groups['ftp-server'] and ftp_server_enable == true
+
+  - name: CONFIGURING A LINUX FTP CLIENT
+    include_role:
+      name: ftp-client-linux
+    when: inventory_hostname in groups['ftp-clients'] and ftp_client_enable == true
   

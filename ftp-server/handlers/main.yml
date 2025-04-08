@@ -1,2 +1,21 @@
 ---
-# handlers file for ftp
+- name: config firewall rule(ftp)
+  firewalld:
+    service: ftp
+    state: enabled
+    permanent: true
+    immediate: true
+
+- name: config firewall rule(passive ports)
+  firewalld:
+    port: "{{ passive_ports.pasv_min_port }}-{{ passive_ports.pasv_max_port }}/tcp"
+    state: enabled
+    permanent: true
+    immediate: true
+  when: passive_ports.pasv_enable is defined and passive_ports.pasv_enable | lower == "yes"
+
+- name: restart vsftpd
+  service:
+    name: vsftpd
+    state: restarted
+    enabled: true

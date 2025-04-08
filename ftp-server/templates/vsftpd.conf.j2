@@ -101,15 +101,15 @@ ftpd_banner={{ ftpd_banner }}
 # (Warning! chroot'ing can be very dangerous. If using chroot, make sure that
 # the user does not have write access to the top level directory within the
 # chroot)
-{% if chroot.chroot_local_user is defined and chroot.chroot_local_user | lower == "yes" %}
+{% if chroot.chroot_local_user is defined %}
 chroot_local_user={{ chroot.chroot_local_user }}
 {% endif %}
-{% if chroot.allow_writeable_chroot is defined and chroot.allow_writeable_chroot | lower == "yes" %}
+{% if chroot.allow_writeable_chroot is defined %}
 allow_writeable_chroot={{ chroot.allow_writeable_chroot }}
 {% endif %}
 
 # (default follows)
-{% if chroot.chroot_list_enable is defined and chroot.chroot_list_enable | lower == "yes" %}
+{% if chroot.chroot_list_enable is defined %}
 chroot_list_enable={{ chroot.chroot_list_enable }}
 chroot_list_file={{ chroot.chroot_list_file | default('/etc/vsftpd/chroot_list') }}
 {% endif %}
